@@ -84,6 +84,86 @@ npm run build
 
 ---
 
+## 📦 Exporting from AI Studio to GitHub
+
+You can export this application directly from Google AI Studio to a GitHub repository or download it locally:
+
+### Option 1: Direct Export via AI Studio UI
+1. In the upper-right corner of the **Google AI Studio** workspace, click the **Settings** / **Overflow Menu** (`⋮` or gear icon).
+2. Select **Export to GitHub** (or **Download as ZIP**).
+3. Authorize your GitHub account when prompted.
+4. Choose whether to export to a new repository or an existing one, set the repository visibility (Public or Private), and confirm.
+5. AI Studio will commit and push the codebase directly to your repository's default branch.
+
+### Option 2: Push via Local Git CLI
+If you downloaded the project as a ZIP:
+1. Extract the downloaded archive on your computer.
+2. Initialize and push to GitHub:
+   ```bash
+   cd weather-intelligence
+   git init
+   git add .
+   git commit -m "Initial commit from Google AI Studio"
+   git branch -M main
+   git remote add origin https://github.com/<your-username>/<your-repo-name>.git
+   git push -u origin main
+   ```
+
+---
+
+## ☁️ Cloudflare Pages Deployment Instructions
+
+This project is a client-side Single Page Application (SPA) built with Vite and Tailwind CSS. It is fully compatible with **Cloudflare Pages** and can be deployed with zero backend configuration.
+
+### Method 1: Git Integration via Cloudflare Dashboard (Recommended)
+
+1. **Log in to Cloudflare**:
+   Navigate to the [Cloudflare Dashboard](https://dash.cloudflare.com/) and sign in.
+2. **Open Pages**:
+   Go to **Compute (Workers) > Workers & Pages**, then click **Create** > **Pages** tab (or **Connect to Git**).
+3. **Connect Your GitHub Account**:
+   Select your Git provider (**GitHub**), authorize Cloudflare, and choose the exported `weather-intelligence` repository.
+4. **Configure Build & Deployment Settings**:
+   Fill in the project build configuration:
+   - **Project Name**: `weather-intelligence` (or your preferred name)
+   - **Production Branch**: `main`
+   - **Framework Preset**: `Vite`
+   - **Build Command**: `npm run build`
+   - **Build Output Directory**: `dist`
+   - **Root Directory**: *(leave blank or `/`)*
+5. **Node.js Compatibility (Optional)**:
+   Under **Environment Variables**, you can specify:
+   - Variable: `NODE_VERSION`
+   - Value: `20` (or `22`)
+6. **Deploy**:
+   Click **Save and Deploy**. Cloudflare Pages will run the Vite build and provision a live preview URL on `*.pages.dev` (along with custom domain support and automatic branch deployments on every git push).
+
+---
+
+### Method 2: Direct CLI Deployment via Wrangler
+
+You can also deploy directly from your local terminal using Cloudflare's **Wrangler** CLI:
+
+1. **Build the production bundle**:
+   ```bash
+   npm run build
+   ```
+   This generates the static distribution assets in the `/dist` directory.
+
+2. **Deploy to Cloudflare Pages with Wrangler**:
+   ```bash
+   npx wrangler pages deploy dist --project-name=weather-intelligence
+   ```
+
+3. Follow the CLI login prompt if prompted. Once uploaded, Wrangler will print your live deployment URL (e.g., `https://weather-intelligence.pages.dev`).
+
+---
+
+### SPA Routing on Cloudflare Pages
+Because this application runs as a Single Page Application (SPA), all client-side paths fall back to `index.html`. Cloudflare Pages automatically handles standard Vite output out of the box with zero additional redirect configuration.
+
+---
+
 ## 📄 License
 
 Apache-2.0
